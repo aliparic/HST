@@ -1,0 +1,578 @@
+
+
+\documentclass[journal]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[final]{graphicx}
+\usepackage{epstopdf}
+\usepackage[centertags]{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{epsfig,subfigure}
+\usepackage{psfrag}
+\usepackage{fixltx2e}
+\usepackage{subfigure}
+\usepackage[options]{algorithm2e}
+\usepackage{algorithmicx}
+\usepackage{stfloats}
+\usepackage{amsmath}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%\usepackage[latin9]{inputenc}
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{esint}
+%\usepackage{subfig}
+%\usepackage{color}
+%\usepackage{multirow}
+%\usepackage{cite}
+
+
+
+ 
+
+
+ 
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+%\usepackage(graphicx)
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Efficient Traffic Offloading for Seamless Connectivity in 5G Networks Onboard High Speed Trains}
+%
+%
+% author names and IEEE memberships
+% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
+% a structure at a ~ so this keeps an author's name from being broken across
+% two lines.
+% use \thanks{} to gain access to the first footnote area
+% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
+% was not built to handle multiple paragraphs
+%
+
+
+%\author{\IEEEauthorblockN{Leila Jalili}\\
+%\IEEEauthorblockA{K.N.Toosi University of Technology, Tehran, Iran}\\
+%Email: ljalili@mail.kntu.ac.ir}
+%
+%\author{\IEEEauthorblockN{Ali Parichehreh}\\
+%	\IEEEauthorblockA{Computer Science Department of Karlstads University, Sweden\\
+%	Email: ali.parichehreh@kau.se}
+
+
+
+
+%\author{\IEEEauthorblockN{Leila Jalili\IEEEauthorrefmark{{1},
+%		Ali Parichehreh\IEEEauthorrefmark{2}} %Stefan Alferedson\IEEEauthorrefmark{1}, Johan Garcia\IEEEauthorrefmark{1}, Anna Brunstrom\IEEEauthorrefmark{1}
+	%	Author Four\IEEEauthorrefmark{4}}
+%	\\
+%	\IEEEauthorblockA{Department of Computer Science,
+%		Karlstad University, Sweden\\
+%		Email: \IEEEauthorrefmark{1}ljalili@mail.kntu.ac.ir,
+%		\IEEEauthorrefmark{2}ali.parichehreh@kau.se}}}
+
+
+%\author{\IEEEauthorblockN{Leila Jalili, Ali Parichehreh, Stefan Alfredsson, Johan Garcia, Anna Brunstrom}\\
+%\IEEEauthorblockA{Computer Science Department of Karlstad University}}
+
+%Email:ljalili@mail.kntu.ac.ir}}
+%\and
+%\IEEEauthorblockN{Leila Jalili, Ali Parichehreh, Stefan Alferedson, Johan Garcia, Anna Brunstrom}\\
+%\IEEEauthorblockA{Computer Science Department of karlstad University\\
+%Email:ali.parichehreh@kau.se}}
+
+
+\author{\IEEEauthorblockN{Leila Jalili, Ali Parichehreh, Stefan Alfredsson, Johan Garcia, Anna Brunstrom}\\
+	\IEEEauthorblockA{Department of Mathematics and Computer Science\\
+		Karlstad University, Sweden\\
+		Email:\{firstname.lastname\}@kau.se}
+}
+
+ 
+
+
+
+% The paper headers
+\markboth{Journal of .....}%
+{Shell \MakeLowercase{\textit{et al.}}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+%\boldmath
+Seamless wireless connectivity in high mobility scenarios ($\geq$ 300 km/h), is one of the fundamental key requirements for 5G networks. High speed train (HST) is one of the preferred mid-range transportation system, and highlights the challenges of providing wireless connectivity in high mobility scenarios for the future 5G networks. Advanced version of Long Term Evolution (LTE-A) of 3GPP project with peak data rate up to 100 Mbps in high mobility scenarios paved the road toward high quality and cost effective on-board Internet in HSTs. However, frequent handovers (HO) of large number of onboard users increase the service interruptions that in turn inevitably decrease the experienced quality of service (QoS).
+ 
+In this paper, according to the two-tier architecture of the HST wireless connectivity, we propose a novel and practically viable on-board traffic offloading mechanism among the HST carriages that effectively mitigates the service interruptions caused by frequent HOs of massive number of onboard users. The proposed architecture does not imply any change on the LTE network standardization. Conclusions are supported by numerical results for realistic LTE parameters and current HST settings.
+
+\end{abstract}
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+5G Networks, Traffic Offloading, High Speed Trains, QoS Provisioning.  
+\end{IEEEkeywords}
+
+
+
+\IEEEpubid{\makebox[\columnwidth]{\hfill 978-1-4799-3083-8/14/\$31.00~\copyright~2014 IEEE}
+\hspace{\columnsep}\makebox[\columnwidth]}
+
+
+\IEEEpubidadjcol 
+
+\section{INTRODUCTION}
+
+%\IEEEPARstart{A}{bstract}-
+Seamless wireless connectivity in high mobility scenarios and heterogeneous radio access environment is one of the key fundamental requirements of 5G networks \cite{5G_White_Paper_2016}. Third Generation Partnership Project (3GPP) has recently standardized the advanced version of Long Term Evolution (LTE-A) and LTE-A Pro, as a road to 5G networks, with a peak data rate up to 100 Mbps in high mobility scenarios ($\geq$ 300 km/h), aiming at a trade off between high data rate and quality of service (QoS) for HST onboard users \cite{Sesia_2009}. Despite this improvement, the hard handover (HO) nature of the LTE system that breaks the connection before making to the target evolved NodeBs (T-eNB) intrinsically causes service interruption, and consequently degrades the experienced QoS. This QoS degradation in HST scenario lends itself a very careful consideration when designing and developing new standardizations for 5G networks mobility scenarios. 
+
+Particularly in the HST scenario, the QoS of large number of onboard User Equipments (UEs) is severely degraded by affecting from different impairments such as frequent HOs, Doppler shift and limited number of Physical Resource Blocks (PRB). In fact the serving eNB (S-eNB) can be considered highly loaded due to the large number of onboard UEs camped in (say 500 or more), and when a cell change happens, the heavy signaling load increases both HO-induced latency and link failure rate. This situation can worsen at higher speeds due to the link-quality drop caused by Doppler shift and overlapping HOs caused by simultaneous requests form consecutive carriages. The HO procedure is triggered by an A3-event at cell boundaries and last until the path switching procedure in the core network. Managing the HO signaling for a large number of UEs that are spatially concentrated in less than 200 m (i.e., the train length) and move at a speed up to 500 km/h (or equivalently, all onboard UEs crosses cell-boundaries in less than 1.5sec) is a very challenging task.
+
+Investigations have been done to provide seamless Internet connectivity onboard the HST by optimizing the LTE network to match the HST peculiarities \cite{Karimi_2012,Sniady_2016}. Using a traffic offloading mechanism onboard the HSTs, to distribute the on-board load over multiple carriages during the HOs, was firstly proposed in \cite{Goratti_2014}, where each carriage uses local information of the adjacent neighboring nodes and forwards its accumulated packets to the neighboring carriages in accordance with the available service rate of the neighbor carriages. This heuristic scheme is further extended in \cite{Parichehreh_2015} where all carriages cooperate in the traffic offloading mechanism. However the use of optical communication for inter-carriage communication used in \cite{Parichehreh_2015} is not always practically feasible (due to the train operators operational constraints).
+ 
+In this paper, we extend the onboard offloading mechanism proposed in \cite{Parichehreh_2015} by removing the optical fiber and using the Wi-Fi access points on-board the HST as a more realistic solution for inter-carriage communication. Since there is no publicly available experimental data on the service time distribution of the LTE network in high mobility scenarios, we extend the mathematical model by considering a general distribution for the service time (instead of Exponential distribution). In addition, we consider the inter-carriage communication delay of the Wi-Fi network for traffic offloading in our model. The solution investigated here consists of independent self-contained communication equipments onboard each carriage linked to other carriages through Wi-Fi access points for the sake of traffic offloading, whenever necessary (see Sect. \ref{sec2}).
+
+Paper is organized by addressing the system model in section \ref{sec2}, distributed traffic offloading on-board the train in \ref{sec3}. Numerical results for realistic LTE parameters in current HST settings are in section \ref{sec4} and support the conclusion in section \ref{sec5}.
+
+
+\section{SYSTEM MODEL}
+\label{sec2}
+The reference architecture adopted in this work is shown in Fig.\ref{Fig1}-a. A HST is composed of N consecutive carriages where each carriage accommodates several passengers including a subset of active UEs. We assume that onboard Internet service is provided by Femto-cell access points while communication to the ground LTE network is provided by Layer-1 (L1) relay node \cite{3GPP_2014}. Each Wi-Fi AP is connected through a dispatcher to an array of N L1 relay nodes deployed onboard the HST so that one L1 relay is placed on the roof of each carriage for carriage-to-ground communication. More specifically, each carriage consists of the following component:
+
+\begin{itemize}
+	\item \textbf{Femto-cell Access Point (FAP):} All passengers inside the carriages can be connected to Internet through FAP and transmitted packets are queued such that the overall arrival rate in each carriage is $\lambda$.
+	\end{itemize}
+
+\begin{itemize}
+	\item \textbf{Dispatcher:} Each dispatcher forwards backlogged packets to the L1 relay node of the carriages. The dispatcher decides portions of backlogged traffic to be redirected to the other L1 relays. Dispatchers are connected together through inter-carriage Wi-Fi equipment, so that carriages can exchange packets by redirecting the traffic among each other. Note that since carriages move at high but constant speed, Doppler shift impairment for inter-carriage communication is negligible. 
+\end{itemize}
+
+\begin{itemize}
+	\item \textbf{Layer-1 relay:} Each L1 relay basically is a bidirectional amplify-forward relay that bridges the onboard signals with the eNBs interface after some power equalization over Uu interface. It serves packets received from/to the direct dispatcher, or offloaded from other carriages based on the specific periodic service model with average service rate $\mu$. Each packet is scheduled based on First-In-First-Out (FIFO) discipline.	
+\end{itemize}
+\par
+
+\begin{figure}[!t]
+	\centering
+	\includegraphics[scale=0.67]{Figs/Figure1.eps}
+	\caption{ (a) Two-tier architecture of HST system with on-board Wi-Fi network and ground LTE network; (b) periodic service and sequential discontinuity over carriages with binary valued approximation $\{\mu_{0},0\}$ used here (dashed).}       
+	\label{Fig1}
+\end{figure}
+
+According to the 3GPP specification \cite{3GPP_2013}, HO takes place when the link quality is poor enough compared to the surrounding cells and A3 event is triggered for a certain period of time interval (time-to-trigger). As shown in Fig.1-a (top), the A3 happens if ${M_n +O_n}>{M_s + O_s + \mathcal{H}}$, where $M_s$ is the measured Reference-Symbol-Received-Power (RSRP) of the S-eNB, $M_n$ is the measured RSRP at the neighbor cells and $\mathcal{H}$ is the hysteresis value. $O_s$ and $O_n$ are the offset value for the S-eNB and potential T-eNBs respectively. Obviously, all the UEs onboard one carriage measure the same $M_s$ value, since all the UEs are served by the same wireless Un link. Therefore, A3 event will be triggered for all the UEs at the same time. This potentially causes a huge amount of HO signaling that, in turn, increases service interruption, when all of UEs transmit over the same random-access channel (RACH). Service interruption caused by handover procedure takes a time interval $T_{off}$ that is assumed to be a random variable depending upon the number of simultaneous handover request to the T-eNB. The instantaneous service model of each carriage versus time $t$ is illustrated in Fig.1-b. HO slides across carriages sequentially. HO interruption time depends on the HST velocity and the LTE system load (say number of active onboard UEs). Therefore it is not a deterministic time interval. Even if HO latency $T_{off}$ has a minimal handover execution time, according to the experimental study in \cite{Parichehreh_2017} it can be modeled as a random variable with Nakagami-m distribution, where the spread control parameter $\Omega$ of the distribution function varies upon the number of active onboard users. Note that service rate $\mu_{i}(t)=0$ in HO interruption interval. For the HST traveling at 300 km/h, and a cell size r=2 km, UEs in each carriage triggers A3-event and request for HO through measurement message every 24s. It means that each cell-carriage connectivity can serve onboard UEs for a period of $T_{on}=24$s with an average service rate $\mu_{\circ}$ (packets/sec). Finally, the LTE service can be modeled as a two-state system that alternates between $0$ and $\mu_{\circ}$ periodically.
+
+\section{DISTRIBUTED TRAFFIC OFFLOADING MECHANISM}
+\label{sec3}
+In this section a distributed traffic offloading mechanism is proposed among the carriages onboard the HST to guarantee a fair service provisioning to all UEs either in HO or in-service period. Our solution is motivated by the specific inter-carriage network architecture onboard the HST that consist of a set of N Wi-Fi access point communicating together on top of carriages as explained in section 2.
+
+\begin{figure}[!t]
+	\centering
+	\includegraphics[scale=1.3]{Figs/Figure2.eps}
+	\caption{Schematic view of traffic offloading mechanism among the carriages during HO period; $r_{ji}$ is optimal portion of backlogged traffic offloaded from $i$-th carriage to the $j$-th one.}       
+\end{figure}
+%\FloatBarrier
+
+
+A schematic view of the traffic offloading during HO is shown in Fig.2. Although it might happens that multiple carriages suffer from handover interruption simultaneously (at very high speed), we assumed a non overlapping HO condition among the carriages for the sake of simplicity. Therefore, we assume $i$-th carriage is in HO period, even if multiple carriages can be in HO at a very high speed). In the proposed scheme, dispatchers play the coordinating role for data transmission in a decentralized way. During the HO, dispatcher for carriage in out-of-service state decide the portions of traffic to be offloaded to the other carriages. The optimal portions of the offloaded traffic are determined based on two criteria: $i$) available capacity of the neighboring carriages, and $ii$) the communication delay for traffic offloading among the carriages.
+
+Traffic offloading mechanism among the carriages can be mathematically reduced to a multi-queue multi-server system with a \textit{cyclostationary} service model \cite{Parichehreh_2015}. However, compared to the proposed algorithm in \cite{Parichehreh_2015}, here we consider a general distribution for the LTE service rate (as there is no publicly available study on the service time distribution for this scenario) and we consider the communication cost among the carriages (as optical fiber is not a practical solution for inter-carriage communication).
+ 
+To simplify, we consider a discrete time queuing system with finite size queues. The model consists of N parallel queues, one for each carriage, where $\{\lambda_{i}\}_{i=1}^{N}$is the rate of Poisson-like traffic generated by all UEs onboard $i$-th carriage. Maximum length of each queue is $q_{max}$ and instantaneous queue length is $q_{i}(t)$ for $i$-th carriage. Packets are dropped if $q_{i}(t)>q_{max}$. Each queue is served based on FIFO discipline by a dispatcher connected to the array of L1 relay nodes with independent time varying service rate $\mu_{i}(t)_{i=1}^{N}$ \in $\{\mu_{\circ},0\}$. Recall that during the HO period it is $\mu_{i}(t)=0$.
+ 
+ Let $r_{ji}$ be the portion of the backlogged traffic the $i$-th carriage offload to the $j$-th carriage, and $\rho_{j}=\mu_{j}-\phi_{j}$ is the residual service capacity of $j$-th carriage given that $\phi_{j}=\sum_{k=1, k\neq i}^{N} r_{jk}\lambda_{k}$ is the total arrival traffic to the $j$-th carriage, excluding $i$-th carriage. In other words, $\boldsymbol{\rho}=\left[\rho_{1},\rho_{2},\dots,\rho_{N}\right]^{T}$ accounts for the residual service capacity, and $\boldsymbol{\lambda}=\left[\lambda_{1},\lambda_{2},\dots,\lambda_{N}\right]^{T}$ is the packet arrival rate for all the carriages, and thus it is $\boldsymbol{\rho} = \boldsymbol{\mu}-\boldsymbol{\phi} = \boldsymbol{\mu}-\mathcal{R}\boldsymbol{\lambda}$ where $\mathcal{R}=\left[\boldsymbol{r_{1},\boldsymbol{r_{2}},\dots,\boldsymbol{r_{N}}}]$ and each entry depicts the portion of backlogged traffic offloaded from $i$-th carriage to $j$-th carriage. Here the purpose is to find the optimal portions $r_{ji}$ for each carriage based on the knowledge of the residual service capability $\rho_{j}$ and communication cost among the carriages. 
+ Since the LTE network service time distribution for high mobility scenario and especially HST is not publicly available and not necessarily Exponential, we use M/G/1 queuing to model each carriage/L1 relay node connected to the LTE network. We assume the arrival traffic at each carriage follows a Poisson distribution, while service rate can be followed by any arbitrary distribution (with known first and second order moments). According to the M/G/1 queuing system the average delay of the $j$-th carriage is:
+ 
+ 
+%Let $r_{ji}$ be the portion of the traffic offloaded from $i$-th carriage toward $j$-th one, and $\rho_{ji}=\mu_{j}-\lambda_{j}$ the residual capacity of $j$-th carriage that can be allocated to the $i$-th carriage where $\lambda_{j}=\sum_{k=1, k\neq i}^{N}r_{kj}\lambda_{k}$. Here the purpose is to optimize $r_{ji}$ for $i$-th carriage based on the residual capacity $\rho_{ji}$ and the communication cost among the carriages. 
+\begin{equation}
+\tau_j  = \overline{T_j} + \frac{\overline{T_j^2}\lambda_j}{2(1-\overline{T_j}\lambda_j)},
+\label{equ1}
+\end{equation}
+\noindent
+where $\bar{T_j}=\frac{1}{\mu_j}$ and $\overline{T_j^2}$ are the first and second order moments of the service time of each carriage (namely, direct transmission time), respectively. Since each carriage can accept traffic from other carriages in addition to transmitting its own traffic, equation (\ref{equ1}) can be written as 
+
+\begin{equation}
+\tau_j = \overline{T_j} + \frac{\overline{T_j^2}\sum_{i=1}^{N} r_{ji}\lambda_{i}}{2\big(1-\overline{T_j}\sum_{i=1}^{N} r_{ji}\lambda_{i}\big)}.
+\label{equ2}
+\end{equation}
+\noindent
+
+As mentioned above, every carriage can offload portions of its queued packets to other less loaded carriages during HO interval. Each carriage transmits the offloading packets through Wi-Fi APs. These APs provide a capacity $C_{ji}$ for transmission from $i$-th carriage to the $j$-th carriage. Therefore the total offloading time for $B$ bits of traffic is
+
+\begin{equation}
+\tau_{ji}^{'}= \frac{B}{C_{ji}}. 
+\label{equ3}
+\end{equation} 
+
+Therefore, the total delay $\Psi_{i}$ for $i$-th carriage for transmitting its backlogged packets via direct transmission or offloading through the backhaul Wi-Fi links can be written as
+
+\begin{multline}
+\Psi_{i}(\mathcal{R}) = \sum_{j=1}^{N} r_{ji}\bigg(\tau_j + \tau_{ji}^{'} \bigg) = \\ \sum_{j=1}^{N}  \bigg[r_{ji}\overline{T_j} + \frac{r_{ji}\overline{T_j^2} \sum_{k=1}^{N} r_{jk}\lambda_{k}}{2\big(1-\overline{T_j}\sum_{k=1}^{N} r_{jk}\lambda_{k}\big)}\\ +r_{ji}\frac{B}{C_{ji}} \bigg],
+\label{multilinedEqu1}
+\end{multline}
+\noindent
+where $\mathcal{R}=[\textbf{r}_1,\textbf{r}_2,...,\textbf{r}_i,....,\textbf{r}_N]$ is the distributed offloading matrix that each column showing the optimal portions to be offloaded from $i$-th carriage to the other carriages. Considering $\rho_{j} = \mu_{j} - \sum_{k=1, k\neq i}^{N} r_{jk}\lambda_{k}$, the equation \ref{multilinedEqu1} can be written as
+
+\begin{multline}
+\Psi_{i}(\mathcal{R}) = \sum_{j=1}^{N} \bigg[r_{ji}\overline{T_j} + \frac{r_{ji}\overline{T_j^2} (r_{ji}\lambda_{i} + \frac{1}{\overline{T_j}} -\rho_{j})}{2\overline{T_j}\big(\rho_{j}-r_{ji}\lambda_i)} +\\ r_{ji}\frac{B}{C_{ji}} \bigg],
+\label{multilinedEqu2}
+\end{multline}  
+
+The purpose here is optimizing the column vector $\textbf{r}_i$ of each carriage based on the knowledge of the residual service capacity $\rho_{j}$ for $j \in \mathcal{N}$. Regarding the above mentioned parameters and objective, each carriage minimizes its objective function as 
+
+\begin{equation}
+\operatorname*{min}_{\boldsymbol{r}_{i}}  \Psi_{i}(\mathcal{R}),
+\label{ObjectiveDelay}
+\end{equation}
+\noindent
+subject to the constraints:
+\begin{equation}
+[\boldsymbol{r}_{i}]^{T}\textbf{1}=1, 
+\label{ConEqu1}
+\end{equation}
+\begin{equation}
+{r_{ji}}\geq 0~~\forall j \in \mathcal{N}.
+\label{ConEqu2}
+\end{equation}
+\noindent
+where constraints (\ref{ConEqu1}) and (\ref{ConEqu2}) are conservation and positivity constraints, respectively.
+
+Assuming that each carriage sorts all the \textsl{acceptor} carriages in $\mathcal{N}$ based on their service time ($t_1\leq t_2 \leq \cdots \leq t_N$) where $t_{j}= \overline{T_j} + \frac{1}{2\rho_{j}} - \frac{\overline{T_{j}^{2}}}{2T_{j}} + \tau_{ji}^'$, the optimal outgoing portion of backlogged packets from $i$-th carriage to the $j$-th one in $\mathcal{N}$ is
+
+
+\[ r_{ji} = \left\{
+\begin{array}{l l}
+\frac{1}{\lambda_{i}} \bigg( \rho_{j} - \frac{\sqrt{\rho_{j}}}{\sqrt{2\big(\alpha -\overline{T_j} + \frac{\overline{T_j^2}}{2\overline{T_j}}-\tau_{ji}^{'}\big)}}  \bigg)  & \quad \text{if $1\leq j < I$}\\
+0 & \quad \text{if  $ j\geq I$} 
+\end{array} \right.\]
+
+\noindent
+where $\alpha$ is given by the following equation
+\begin{equation}
+	\sum_{j=1}^{I-1} \rho_{j} -\lambda_i = \sum_{j=1}^{I-1} \frac{\sum_{j=1}^{I-1} \sqrt{\rho_{j}}}{\sqrt{2(\alpha -\overline{T_{j}}+\frac{\overline{T_{j}^2}}{2\overline{T_j}} - \tau_{ji}^{'})}},
+\end{equation}
+\noindent
+and $I$ is the minimum index that satisfies the following inequality
+
+\begin{equation}
+	\alpha \leq \overline{T_j} + \frac{1}{\rho_{j}} - \frac{\overline{T_j^2}}{2\overline{T_j}} + \tau_{ji}^{'} .
+\end{equation}
+
+\textbf{Proof}. In Appendix A.%\ref{LoadBalancingMG1}. \par
+\par
+
+
+\begin{algorithm}
+	\caption{Traffic Offloading (TO) Algorithm onboard HST}
+	\KwIn{($\lambda_i$, $\boldsymbol{\rho}_i$, $\boldsymbol{\mu}$, $\overline{\textbf{T}^2}=[\overline{T_1^2},\overline{T_2^2}, \cdots, \overline{T_N^2}])$}
+	
+	Sort all carriages based on their nominal delay $t_j=\overline{T_j} + \frac{1}{2\rho_{j}} - \frac{\overline{T_j^2}}{2T_j} + \tau_{ji}^{'}$\;\\ 
+	$ n \leftarrow N$\;  \\
+	Find $\alpha$ so that 
+	$\sum_{j=1}^{n} \rho_{j} -\lambda_i = \sum_{j=1}^{n} \frac{\sum_{j=1}^{n} \sqrt{\rho_{j}}}{\sqrt{2(\alpha -\overline{T_{j}}+\frac{\overline{T_{j}^2}}{2\overline{T_j}} - \tau_{ji}^{'})}}$ \; \\
+	
+	\While{$\alpha \leq t_n $}{
+		
+		$r_{ni} \leftarrow 0$\;  \\
+		$n \leftarrow n-1$\;  \\
+		find $\alpha$ so that
+		$\sum_{j=1}^{n} \rho_{j} -\lambda_i = \sum_{j=1}^{n} \frac{\sum_{j=1}^{n} \sqrt{\rho_{j}}}{\sqrt{2(\alpha -\overline{T_{j}}+\frac{\overline{T_{j}^2}}{2\overline{T_j}} - \tau_{ji}^{'})}}$ \; \\
+	}
+	
+	\For{$j:=1 : n $}{
+		{$r_{ji} = \frac{1}{\lambda_{i}} \bigg( \rho_{j} - \frac{\sqrt{\rho_{j}}}{\sqrt{2\big(\alpha -\overline{T_j} + \frac{\overline{T_j^2}}{2\overline{T_j}}-\tau_{ji}^{'}\big)}}  \bigg) $}\; \\
+	}
+	
+	\Return{$\textbf{r}_i$}\;
+	\label{DOA}
+\end{algorithm}
+
+The pseudo code of the proposed traffic offloading (TO) algorithm is shown in Algorithm \ref{DOA}. The decision column $\textbf{r}_i$ is the optimum offloaded portions of traffic to be forwarded from the out-of-service carriage through the other carriages given the other carriages’ residual service capacity with any arbitrary distribution, and inter-carriage communication delay. This algorithm is a strategy for every dispatcher to find optimum portions of traffic and cope with backlogged traffic in HO period. If we assume that only one carriage is in HO period, Algorithm \ref{DOA} can be reduced to the finding the optimal strategy for a system with one dispatcher and N L1 relay nodes acting as N servers (it holds true for overlapping HO condition among consecutive carriages). In other words, other carriages behave as a simple M/G/1 queue system with an additional portion of packets received from out-of-service carriages in the HO period. Traffic offloading algorithm is evaluated for onboard train-to-ground network (uplink), although with a similar reasoning it can be implemented for the downlink data transmission. 
+%Namely, for each out-of-service carriage $i$, decision of all the other dispatchers are kept fixed, thus the variables involved in objective function are the predefined load fractions of carriage j $( j\neq i)$ so that $r_{jj}$=1 and $r_{jk}$=0 for $k\neq j$. Recall that the carriages suffer from HO sequentially over time (or some carriages are in service while others preform HOs), and therefore when some carriages are out-of-service the other carriages can be used to offload its traffic. In other words, other carriages behave as a simple M/G/1 queue system with an additional portion of packets received from out-of-service carriages in the HO period. This method is implemented for on-board train-to-ground network (uplink), although with a similar reasoning it can be implemented for the downlink.
+
+
+\section{SIMULATION SETTINGS AND RESULTS}
+\label{sec4}
+
+
+In this section, we evaluate the proposed solution in comparison with the state-of-the-art HST on-board architecture via simulation in Matlab. We consider an HST with 5 carriages (recall that every carriage has one FAP, dispatcher and L1 relay). We assume rural area settings with a cell size 2km and LTE backhaul (ground-train links). Service model for each carriage is based on the simplified binary states $\mu_{0}$,0. Handover latency $T_{off}$ is a random value generated by Nakagami-m distribution with spread control parameter $\Omega = \{100,500\}ms$.  For the sake of simplicity and tractability communication cost among the carriages is $\tau_{ji}=\frac{1}{\mu_{off}}$ where $\mu_{off}$ is the offloading rate and according to the experimental study shown in \cite{LTEvsWiFi} $\mu_{off}$ is equal to the service rate of LTE network (UE from Cat. 4 with $2\times2$ MIMO). Performance is evaluated in terms of average delay, packet drop probability and throughput conditioned to handover period versus utilization factor $u$. The utilization factor $u$ is defined based on the ratio of the average packet arrival rate to the average system capacity so that,
+
+\begin{equation}
+u=\frac{\sum_{i=1}^{N}\int_{t=0}^{T_{on}}\lambda_{i}(t)d_{\tau}}{\sum_{i=1}^{N}\int_{t=0}^{T_{on}}\mu_{i}(t)d_{\tau}}.
+\label{equ20}
+\end{equation}
+Note that for the network stability the following condition that should be satisfied.
+
+\begin{equation}
+\sum_{i=1}^{N}\lambda_{i}<\sum_{j=1}^{N}\mu_{j},
+\label{equ2}
+\end{equation}
+\noindent
+which means the packet arrival rate for all the carriages should be less than overall LTE service rate. Table I shows the simulation settings based on practical values available in current HST implementation.
+
+
+\begin{table}[!t]
+\label{Table}
+\caption{SIMULATION SETTING}
+\centering
+\begin{tabular}{|1|1|1|}
+\hline
+parameter & comment & value \\ \hline
+r &  cell size  & $2km$  \\
+NoeNB &  Number of eNB along track  &  $200$ \\
+$q_{max}$ & Max. queue length  &  $50$ \\
+$T_{RF}$ &  LTE radio frame duration  &  $10ms$ \\
+$T_{on}$ &  Average serving time inside a cell  &  $24s$ \\
+$T_{off}$ &  HO distribution spread parameter ($\Omega$) &  ${100, 500}ms$ \\
+$\overline{h}$ & eNB off-track distance &  $50m$ \\
+$\sigma_{h}^2$ & eNB off-track variance &  $200m$ \\
+\hline
+
+\end{tabular}
+\end{table}
+
+
+%\begin{figure}[!t]
+%	\centering
+%	\includegraphics[scale=0.60]{Figs/delay.eps}
+%	\caption{Average packet delay conditioned to HO period  $T_{off}$ versus utilization factor $\(u=[0,1]\)$;~$\Omega=500ms$ (solid) and $100ms$ (dashed).}
+%	\label{Fig4}
+%\end{figure}
+%
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.60]{Figs/drop.eps}
+%	\caption{Packet drop probability conditioned to HO period  $T_{off}$ versus utilization factor $\(u=[0,1]\)$;~$\Omega=500ms$ (solid) and $100ms$ (dashed).}
+%	\label{Fig5}
+%\end{figure}
+
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.60]{Figs/throughput.eps}
+%	\caption{Throughput conditioned to HO period comparison between conventional HST and HST with distributed traffic offloading (TO) mechanism vs utilization factor $\(u=[0,1]\)$; $\Omega=100ms$ (solid) and $\Omega=100ms$(dashed).        
+%	}
+%	\label{Fig3}
+%\end{figure}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=.6]{Figs/delay.eps}
+	\caption{Average packet delay conditioned to HO period $T_{off}$ versus utilization factor $\(u=[0,1]\)$;~$\Omega=500ms$ (solid) and $100ms$ (dashed).\\}
+	\label{Fig4}
+	
+	\includegraphics[scale=.6]{Figs/drop.eps}
+	\caption{packet drop probability conditioned to HO period $T_{off}$ versus utilization factor $\(u=[0,1]\)$;~$\Omega=500ms$ (solid) and $100ms$ (dashed).\\}
+	\label{Fig5}
+	
+    \includegraphics[scale=.6]{Figs/throughput.eps}
+	\caption{Throughput conditioned to HO period comparison between conventional HST and HST with distributed traffic offloading (TO) mechanism vs utilization factor $\(u=[0,1]\)$; $\Omega=100ms$ (solid) and $\Omega=100ms$(dashed).\\}
+	\label{Fig3}
+\end{figure}
+
+
+
+
+Fig.\ref{Fig4} provides a comprehensive comparison of average delay conditioned to the HO period of the proposed algorithm compared to the conventional HST scenario. Here, we consider a realistic HST scenario consist of N=5 carriages (even if the same conclusions holds true for any $N>>3$) and random HO interruption time with spread control parameter $\Omega=100ms$ (solid) and $\Omega=100ms$(dashed). Due to the heavy tail of the Nakagami-M distribution two or three carriages can simultaneously be out-of-service. As is shown, TO algorithm provides an acceptable solution compared to the conventional HST without traffic offloading mechanism during HO period. 
+
+
+Fig.\ref{Fig5} compares the packet drop probability conditioned to the HO period for different algorithms. Notice that packet drop probability is counted for received packets at Wi-Fi AP queues. In other words, arriving packets will be dropped when the length of queue is equal to the maximum length of queue $(q_{i} (t)> q_{max})$. The results allow us to conclude that the TO outperforms the current state of art solution of the HST on-board connectivity (named as conventional HST) with a lower packet drop probability. More precisely, for the utilization factor $u\leq0.9$, average delay and packet drop probability are remarkably controlled by offloading mechanism compared to conventional system HST without offloading mechanism during HO period. 
+
+
+Fig.\ref{Fig3} shows the average throughput of the HST on-board LTE connectivity equipped with the proposed TO scheme. We define the HST throughput (ensemble over all carriages) provided by one eNB as the amount of transmitted traffic per second in uplink direction. As shown in Fig.\ref{Fig3} throughput of the proposed scheme (labeled as TO) outperforms the throughput of conventional HST due to the offloading through other neighboring carriages. Therefore, distributed traffic offloading mechanism is a mandatory choice to efficiently exploit the available capacity of other L1 relays and forward backlogged packets in a reasonable time without being dropped.
+
+%A remark is in order on simulations. Realistic settings should account for large %fluctuations of T-RAT service of directional antennas due to mispositioning of eNB with %respect to beamwidth. Even if this would increases the service fluctuations, overall %performance can be shown to largely outperforms conventional HST system.\par
+
+
+\section{CONCLUSION}
+\label{sec5}
+In this paper, we proposed a novel approach for providing fair QoS for on-board Internet service by tailoring a distributed traffic offloading mechanism.  Carriages during HO period and in out-of-service condition, redirects their backlogged packets through the other carriages based on their available capacity and also communication delay of offloading mechanism. Simulation results based on LTE network and onboard Wi-Fi network shows the effectiveness of the proposed solution compared to conventional HST system without onboard traffic offloading mechanism.
+
+
+
+
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+\begin{thebibliography}{1}
+
+\bibitem{5G_White_Paper_2016}
+5G White Paper: "5G Vision, Requirements, and Enabling Technologies", 2016. 
+
+\bibitem{Sesia_2009}
+E. Dahlman, S. Parkvall, J. Skold, "4G, LTE-Advanced Pro and The Road to 5G," Elsevier Ltd, 2016.
+
+\bibitem{Karimi_2012}
+O.B. Karimi, J. Liu, C. Wang, “Seamless Wireless Connectivity for Multimedia Services in High Speed Trains,” IEEE J. Sel. Areas on Commun.,, 30 (4), 2012, pp. 729–739.
+
+\bibitem{Sniady_2016}
+ A. Sniady, J. Soler, M. Kassab, M. Berbineau, “Ensuring Long-Term Data Integrity: ETCS Data Integrity Requirements Can Be Fulfilled Even under Unfavorable Conditions with the Proper LTE Mechanisms,” IEEE Vehicular Technology Magazine 11 (2), 2016, pp. 60-70.
+
+\bibitem{Goratti_2014}
+L. Goratti , S. Savazzi , A. Parichehreh , U.Spagnolini . Distributed Load Balancing for Future 5G Systems On-board High-Speed Trains. In 1st International Conference on 5G for Ubiquitous Connectivity, 5GU, Levi, Finland, 2014, 140–145.
+
+\bibitem{Parichehreh_2015}
+A. Parichehreh, S. Savazzi, L. Goratti, U. Spagnolini “Seamless LTE Connectivity in High Speed Trains,” in Wireless Communication and Mobile Computing. Wiley \& Sons. 2015.
+
+
+\bibitem{3GPP_2014}
+3GPP TS 36.836: Technical Specification Group Radio Access Network; Evolved Universal Terrestrial Radio Access (E-UTRA); Study on mobile relay (Release 12), 2014.
+
+\bibitem{3GPP_2013}
+3GPP TS 36.331, “LTE; Evolved Universal Terrestrial Radio Access (E-UTRA); Radio Resource Control (RRC); Protocol Specification (Release 13), 2016.
+
+\bibitem{Parichehreh_2017}
+A. Parichehreh, U. Spagnolini , P. Marini , A. Fontana, "Load-Stress Test of Massive Handovers for LTE Two-Hop Architecture in High-Speed Trains", IEEE Communications Magazine 55(3), 2017, pp. 170-177.
+
+
+\bibitem{LTEvsWiFi}
+Huawei White Paper: "LTE Small Cell v.s. WiFi User Experience".
+\end{thebibliography}
+
+\appendices
+%\section{Proof of Theorem}
+\section{Proof of Traffic Offloading Among Carriages}
+
+The objective function \ref{ObjectiveDelay} is convex in the feasible range of $\textbf{r}_{i}$ defined by the constraints (\ref{ConEqu1}) and (\ref{ConEqu2}), as $\frac{\partial \Psi_{i}}{\partial r_{ji}}\geq 0$ and $\frac{\partial^{2} \Psi_{i}}{\partial r_{ji}^{2}}\geq 0$ within the constraints. Therefore the Hessian matrix of $\Psi_{i}$ is positive. Then regarding the inequality constraint (\ref{ConEqu2}) we use Karush-Kuhn-Tucker conditions to solve this optimization problem. Let $\alpha$ and $\boldsymbol{\eta}=[\eta_{1},\eta_{2},\cdots\eta_{N}]^{T}$ denote the Lagrange multipliers. The Lagrangian is
+
+\begin{multline}
+	\mathcal{L}(\textbf{r}_{i},\alpha, \boldsymbol{\eta}) = \\ \sum_{j=1}^{N} \bigg[ r_{ji}\overline{T_j} + \frac{r_{ji}\overline{T_j^2} (r_{ji}\lambda_{i} + \frac{1}{\overline{T_j}} -\rho_{j})}{2\overline{T_j}\big(\rho_{j}-r_{ji}\lambda_i)} \\+ r_{ji}\frac{B_{ji}}{C_{ji}}\bigg]-\alpha ([{\textbf{r}_{i}}]^{T} \textbf{1}-1 ) - \boldsymbol{\eta}^{T}\mathbf{r}_{i},
+\end{multline}
+\noindent
+applying the KKT conditions implies that $\textbf{r}_{i}$ is an optimal solution for dispatcher $i$ if and only if there exist $\alpha$ and $\boldsymbol{\eta}$ so that
+\begin{equation}
+	\frac{\partial \mathcal{L}}{\partial \textbf{r}_{i}}= \overline{T_j} + \frac{\rho_{j}}{2(\rho_{j}-r_{ji}\lambda_i)^2}  - \frac{\overlaine{T_{j}^{2}}}{2\overline{T_j}} + \tau_{ji}^{'} -\alpha=0   ~,~~~ j \in \mathcal{N},
+	\label{rond}
+\end{equation}
+
+\begin{equation}
+	\frac{\partial \mathcal{L}}{\partial \alpha}= [{\textbf{r}_{i}}]^{T} \textbf{1}-1 =0,
+\end{equation}
+%
+\begin{equation}
+	\boldsymbol{\eta}\circ\mathbf{r}_{i}=0, ~~~~ \boldsymbol{\eta}\geq 0, ~~~~ \mathbf{r}_{i}\geq 0.
+\end{equation}
+
+Equivalently,
+
+\begin{multline}
+	\alpha = \overline{T_j} + \frac{\rho_{j}}{2(\rho_{j}-r_{ji}\lambda_i)^2}  - \frac{\overlaine{T_{j}^{2}}}{2\overline{T_{j}}} + \tau_{ji}^{'}~~~\\\text{if} ~ r_{ji} > 0~, j \in \mathcal{N}.
+	\label{equation1}
+\end{multline}
+
+\begin{multline}
+	\alpha \leq \overline{T_j} + \frac{1}{2\rho_{j}}  - \frac{\overlaine{T_{j}^{2}}}{2\overline{T_{j}}} + \tau_{ji}^{'}~~~\\\text{if} ~ r_{ji} = 0~, j \in \mathcal{N}.
+	\label{equation2}
+\end{multline}
+
+Solving ($\ref{equation1}$) for $\mathbf{r}_{i}$ gives 
+\begin{equation}
+	r_{ji}=\frac{1}{\lambda_{i}} \bigg( \rho_{j} - \frac{\sqrt{\rho_{j}}}{\sqrt{2\big(\alpha -\overline{T_j} + \frac{\overline{T_j^2}}{2\overline{T_j}}-\tau_{ji}^{'}\big)}} \bigg).
+	\label{rij}
+\end{equation}
+
+Note that if we sort carriages in $\mathcal{N}$ based on their service time ($t_1\leq t_2 \leq \cdots \leq t_N$) where $t_{j}= \overline{T_j} + \frac{1}{2\rho_{j}} - \frac{\overline{T_{j}^{2}}}{2T_{j}} + \tau_{ji}^'$, obviously, $(r_{1i}\geq r_{2i}\geq,\dots,\geq r_{Ni})$. Moreover, there exist some situations that some carriages experience very long transmission delay or huge traffic load. Therefore, there exist $1\leq I\leq N$ such that $r_{ji}=0$ for $j\geq I$. Therefore, considering (\ref{equation1}) and summing over the \textit{acceptor} carriages we derive 
+
+\begin{equation}
+	\sum_{j=1}^{I-1} \rho_{j} - \lambda_{i}  = \sum_{j=1}^{I-1} \frac{\rho_{j}}{\sqrt{2(\alpha - \overline{T_j} + \frac{T_j^2}{2T_j} - \tau_{ji}^{'})}}
+\end{equation}
+
+Therefore we can rewrite equation \ref{rij} as
+\begin{equation}
+	$\[ r_{ji} = \left\{
+	\begin{array}{l l}
+	\frac{1}{\lambda_{i}} \bigg( \rho_{j} - \frac{\sqrt{\rho_{j}}}{\sqrt{2\big(\alpha -\overline{T_j} + \frac{\overline{T_j^2}}{2\overline{T_j}}-\tau_{ji}^{'}\big)}}  \bigg)  & \quad \text{if $1\leq j < I$}\\
+	0 & \quad \text{if  $ j\geq I$}
+	\end{array} \right.\]$
+\end{equation}
+\noindent
+where $I$ is the minimum index that satisfies the following inequality
+
+\begin{equation}
+	\alpha \leq \overline{T_j} + \frac{1}{\rho_{j}} - \frac{\overline{T_j^2}}{2\overline{T_j}} + \tau_{ji}^{'} 
+\end{equation}
+
+
+% biography section
+% 
+% If you have an EPS/PDF photo (graphicx package needed) extra braces are
+% needed around the contents of the optional argument to biography to prevent
+% the LaTeX parser from getting confused when it sees the complicated
+% \includegraphics command within an optional argument. (You could create
+% your own custom macro containing the \includegraphics command to make things
+% simpler here.)
+%\begin{biography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
+% or if you just want to reserve a space for a photo:
+
+%\begin{IEEEbiography}{Ali Parichehreh}
+%Biography text here.
+%\end{IEEEbiography}
+
+% if you will not have a photo at all:
+%\begin{IEEEbiography}{Umberto Spagnolini}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+
+% insert where needed to balance the two columns on the last page with
+% biographies
+%\newpage
+
+
+% You can push biographies down or up by placing
+% a \vfill before or after them. The appropriate
+% use of \vfill depends on what kind of text is
+% on the last page and whether or not the columns
+% are being equalized.
+
+%\vfill
+
+% Can be used to pull up biographies so that the bottom of the last one
+% is flush with the other column.
+%\enlargethispage{-5in}
+
+
+
+% that's all folks
+\end{document}
+
+
